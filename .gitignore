@@ -1,0 +1,36 @@
+# Environment and secrets
+.env
+.env.*
+*.pem
+*.key
+*.pfx
+*.cer
+
+# SSH keys
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
+
+# Azure deployment outputs
+deployment-output.json
+deployment-outputs.json
+what-if-output.txt
+
+# Local parameters containing sensitive values
+*.local.bicepparam
+parameters.local.json
+
+# Logs and temporary files
+*.log
+*.tmp
+tmp/
+temp/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
