@@ -48,7 +48,7 @@ resource dataCollectionRule 'Microsoft.Insights/dataCollectionRules@2023-03-11' 
           ]
           samplingFrequencyInSeconds: 60
           counterSpecifiers: [
-            '\\Processor(_Total)\\% Processor Time'
+            '\\Processor(*)\\% Processor Time'
             '\\Memory\\Available MBytes'
             '\\Memory\\% Used Memory'
             '\\Logical Disk(*)\\% Free Space'
