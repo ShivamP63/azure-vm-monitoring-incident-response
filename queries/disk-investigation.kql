@@ -1,0 +1,10 @@
+Perf
+| where TimeGenerated > ago(1h)
+| where Computer =~ "vm-monitoring-dev"
+| where ObjectName == "Logical Disk"
+| where CounterName == "% Free Space"
+| summarize AverageFreeSpace = avg(CounterValue),
+            MinimumFreeSpace = min(CounterValue)
+    by bin(TimeGenerated, 1m), Computer, InstanceName
+| extend MaximumUsedSpace = 100.0 - MinimumFreeSpace
+| order by TimeGenerated asc

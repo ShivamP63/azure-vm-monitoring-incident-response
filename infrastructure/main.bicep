@@ -22,6 +22,9 @@ param adminUsername string = 'azureadmin'
 @description('SSH public key used to authenticate to the Linux VM.')
 param adminSshPublicKey string
 
+@description('Email address that receives Azure Monitor alert notifications.')
+param alertEmailAddress string
+
 @description('Public IPv4 address allowed to connect to the VM over SSH.')
 param allowedSshSource string
 
@@ -70,6 +73,7 @@ module monitoring 'modules/monitoring.bicep' = {
   params: {
     location: location
     vmName: virtualMachine.outputs.vmName
+    alertEmailAddress: alertEmailAddress
     tags: commonTags
   }
 }
@@ -80,3 +84,5 @@ output vmPublicIpAddress string = virtualMachine.outputs.publicIpAddress
 output logAnalyticsWorkspaceName string = monitoring.outputs.workspaceName
 output dataCollectionRuleName string = monitoring.outputs.dataCollectionRuleName
 output sshCommand string = 'ssh ${adminUsername}@${virtualMachine.outputs.publicIpAddress}'
+output actionGroupName string = monitoring.outputs.actionGroupName
+output highCpuAlertName string = monitoring.outputs.highCpuAlertName

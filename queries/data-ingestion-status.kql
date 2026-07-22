@@ -1,0 +1,8 @@
+Perf
+| where TimeGenerated > ago(1h)
+| where Computer =~ "vm-monitoring-dev"
+| summarize LastPerformanceRecord = max(TimeGenerated),
+            RecordsReceived = count()
+    by Computer
+| extend MinutesSinceLastRecord =
+    datetime_diff("minute", now(), LastPerformanceRecord)
