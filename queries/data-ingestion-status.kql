@@ -1,8 +1,10 @@
+// Confirm that guest performance telemetry is still arriving from the VM.
 Perf
 | where TimeGenerated > ago(1h)
 | where Computer =~ "vm-monitoring-dev"
-| summarize LastPerformanceRecord = max(TimeGenerated),
-            RecordsReceived = count()
+| summarize
+    LastPerformanceRecord = max(TimeGenerated),
+    RecordsReceived = count()
     by Computer
-| extend MinutesSinceLastRecord =
-    datetime_diff("minute", now(), LastPerformanceRecord)
+| extend MinutesSinceLastRecord = datetime_diff("minute", now(), LastPerformanceRecord)
+| project Computer, LastPerformanceRecord, MinutesSinceLastRecord, RecordsReceived

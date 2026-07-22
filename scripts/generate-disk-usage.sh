@@ -18,4 +18,4 @@ df -h /
 
 echo
 echo "The test file is temporary."
-echo "Run scripts/cleanup-test-files.sh to remove it."
+echo "Run ./cleanup-test-files.sh to remove it."

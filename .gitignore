@@ -34,3 +34,5 @@ Thumbs.db
 # IDE files
 .vscode/
 .idea/
+# Environment-specific Bicep parameter files
+infrastructure/main.dev.bicepparam

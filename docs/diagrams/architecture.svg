@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="760" viewBox="0 0 1400 760" role="img" aria-labelledby="title desc">
+  <title id="title">Azure VM monitoring and incident response architecture</title>
+  <desc id="desc">Cloud operator connects through an NSG to an Ubuntu VM. Azure Monitor Agent sends performance counters through a Data Collection Rule to Log Analytics. A high CPU metric alert invokes an email Action Group.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker>
+    <style>
+      .title{font:700 28px Arial,sans-serif;fill:#0f172a}.subtitle{font:400 15px Arial,sans-serif;fill:#475569}
+      .box{fill:#fff;stroke:#64748b;stroke-width:2;rx:12}.azure{fill:#eff6ff;stroke:#2563eb;stroke-width:2;rx:18}
+      .group{fill:#f8fafc;stroke:#94a3b8;stroke-width:2;stroke-dasharray:7 5;rx:16}.network{fill:#f0fdf4;stroke:#16a34a;stroke-width:2;rx:14}
+      .head{font:700 18px Arial,sans-serif;fill:#0f172a}.text{font:400 14px Arial,sans-serif;fill:#334155}.small{font:400 12px Arial,sans-serif;fill:#475569}
+      .line{stroke:#475569;stroke-width:2.2;fill:none;marker-end:url(#arrow)}.dash{stroke:#64748b;stroke-width:2;fill:none;stroke-dasharray:6 5;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect width="1400" height="760" fill="#ffffff"/>
+  <text x="700" y="42" text-anchor="middle" class="title">Azure VM Monitoring and Incident Response</text>
+  <text x="700" y="68" text-anchor="middle" class="subtitle">Bicep-deployed Linux monitoring, alerting, notification, and KQL investigation</text>
+
+  <rect x="250" y="95" width="1110" height="610" class="azure"/>
+  <text x="275" y="125" class="head">Azure Subscription</text>
+  <rect x="280" y="145" width="1050" height="525" class="group"/>
+  <text x="305" y="175" class="head">Resource Group: rg-monitoring-incident-dev</text>
+
+  <rect x="315" y="200" width="400" height="260" class="network"/>
+  <text x="335" y="230" class="head">Virtual Network / Subnet</text>
+  <text x="335" y="252" class="small">vnet-monitoring-dev • snet-monitoring-dev</text>
+  <rect x="350" y="280" width="160" height="105" class="box"/>
+  <text x="430" y="310" text-anchor="middle" class="head">NSG</text>
+  <text x="430" y="336" text-anchor="middle" class="text">TCP/22 allowed</text>
+  <text x="430" y="357" text-anchor="middle" class="small">from admin /32 only</text>
+  <rect x="535" y="270" width="145" height="130" class="box"/>
+  <text x="607" y="300" text-anchor="middle" class="head">Ubuntu VM</text>
+  <text x="607" y="326" text-anchor="middle" class="text">vm-monitoring-dev</text>
+  <text x="607" y="350" text-anchor="middle" class="small">SSH keys only</text>
+  <text x="607" y="370" text-anchor="middle" class="small">AMA extension</text>
+
+  <rect x="765" y="205" width="230" height="115" class="box"/>
+  <text x="880" y="238" text-anchor="middle" class="head">Data Collection Rule</text>
+  <text x="880" y="266" text-anchor="middle" class="text">CPU • memory • disk</text>
+  <text x="880" y="289" text-anchor="middle" class="small">60-second sampling</text>
+
+  <rect x="1050" y="205" width="230" height="115" class="box"/>
+  <text x="1165" y="238" text-anchor="middle" class="head">Log Analytics</text>
+  <text x="1165" y="266" text-anchor="middle" class="text">Perf table</text>
+  <text x="1165" y="289" text-anchor="middle" class="small">30-day retention</text>
+
+  <rect x="765" y="395" width="230" height="120" class="box"/>
+  <text x="880" y="428" text-anchor="middle" class="head">High CPU Alert</text>
+  <text x="880" y="456" text-anchor="middle" class="text">Average CPU &gt; 70%</text>
+  <text x="880" y="479" text-anchor="middle" class="small">5-minute window • Severity 2</text>
+
+  <rect x="1050" y="395" width="230" height="120" class="box"/>
+  <text x="1165" y="428" text-anchor="middle" class="head">Action Group</text>
+  <text x="1165" y="456" text-anchor="middle" class="text">Email receiver</text>
+  <text x="1165" y="479" text-anchor="middle" class="small">Common alert schema</text>
+
+  <rect x="765" y="560" width="515" height="75" class="box"/>
+  <text x="1022" y="590" text-anchor="middle" class="head">Operational Assets</text>
+  <text x="1022" y="616" text-anchor="middle" class="text">Bash simulations • KQL queries • Runbooks • Incident report</text>
+
+  <rect x="25" y="285" width="180" height="120" class="box"/>
+  <text x="115" y="320" text-anchor="middle" class="head">Cloud Operator</text>
+  <text x="115" y="348" text-anchor="middle" class="text">Deploys and validates</text>
+  <text x="115" y="371" text-anchor="middle" class="small">Receives alerts • Runs KQL</text>
+
+  <path d="M205 345 L350 335" class="line"/><text x="265" y="322" class="small">SSH</text>
+  <path d="M510 335 L535 335" class="line"/>
+  <path d="M765 263 L680 330" class="dash"/><text x="692" y="275" class="small">DCR association</text>
+  <path d="M680 350 C820 350,910 300,1050 270" class="line"/><text x="820" y="330" class="small">Microsoft-Perf</text>
+  <path d="M680 375 C735 390,735 445,765 455" class="line"/><text x="684" y="425" class="small">Percentage CPU</text>
+  <path d="M995 455 L1050 455" class="line"/>
+  <path d="M1050 485 C900 545,390 590,205 375" class="line"/><text x="420" y="563" class="small">Email notification</text>
+  <path d="M205 365 C420 660,900 650,1050 305" class="dash"/><text x="530" y="640" class="small">KQL investigation</text>
+  <path d="M1020 515 L1020 560" class="dash"/>
+</svg>

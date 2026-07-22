@@ -1,10 +1,13 @@
+// Review filesystem free-space telemetry and calculate used-space percentage.
+// Snap and pseudo-filesystem instances may report values that are normal for Linux.
 Perf
 | where TimeGenerated > ago(1h)
 | where Computer =~ "vm-monitoring-dev"
 | where ObjectName == "Logical Disk"
 | where CounterName == "% Free Space"
-| summarize AverageFreeSpace = avg(CounterValue),
-            MinimumFreeSpace = min(CounterValue)
+| summarize
+    AverageFreeSpacePercent = round(avg(CounterValue), 2),
+    MinimumFreeSpacePercent = round(min(CounterValue), 2)
     by bin(TimeGenerated, 1m), Computer, InstanceName
-| extend MaximumUsedSpace = 100.0 - MinimumFreeSpace
+| extend MaximumUsedSpacePercent = round(100.0 - MinimumFreeSpacePercent, 2)
 | order by TimeGenerated asc

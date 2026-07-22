@@ -1,10 +1,13 @@
+// Investigate one-minute average and maximum CPU utilization for the VM.
+// Linux AMA reports the aggregate processor instance as "total".
 Perf
 | where TimeGenerated > ago(1h)
 | where Computer =~ "vm-monitoring-dev"
 | where ObjectName == "Processor"
 | where CounterName == "% Processor Time"
 | where InstanceName == "total"
-| summarize AverageCPU = avg(CounterValue),
-            MaximumCPU = max(CounterValue)
+| summarize
+    AverageCPUPercent = round(avg(CounterValue), 2),
+    MaximumCPUPercent = round(max(CounterValue), 2)
     by bin(TimeGenerated, 1m), Computer
 | order by TimeGenerated asc

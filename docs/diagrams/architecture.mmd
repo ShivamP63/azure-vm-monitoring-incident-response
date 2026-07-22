@@ -1,0 +1,27 @@
+flowchart LR
+    Operator["Cloud Operator"]
+
+    subgraph Subscription["Azure Subscription"]
+      subgraph RG["rg-monitoring-incident-dev"]
+        subgraph Network["vnet-monitoring-dev / snet-monitoring-dev"]
+          NSG["Network Security Group\nSSH from administrator CIDR"]
+          VM["Ubuntu Linux VM\nvm-monitoring-dev"]
+          AMA["Azure Monitor Agent"]
+        end
+
+        DCR["Data Collection Rule\nCPU, memory, disk counters"]
+        LAW["Log Analytics Workspace\nPerf table"]
+        Alert["High CPU Metric Alert\n>70% average for 5 minutes"]
+        AG["Action Group\nEmail notification"]
+      end
+    end
+
+    Operator -->|SSH key authentication| NSG
+    NSG --> VM
+    VM --- AMA
+    DCR -->|association| AMA
+    AMA -->|Microsoft-Perf| LAW
+    VM -->|Percentage CPU platform metric| Alert
+    Alert --> AG
+    AG -->|Common alert schema email| Operator
+    Operator -->|KQL investigation| LAW
